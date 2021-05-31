@@ -1,4 +1,4 @@
-FROM madduci/docker-linux-cpp:latest
+FROM language-zoo:latest
 
 LABEL maintainer="Michele Adduci <adduci@tutanota.com>" \
       license="Copyright (c) 2012-2021, Matt Godbolt"
@@ -24,7 +24,12 @@ RUN echo "*** Installing Compiler Explorer ***" \
     && npm i @sentry/node \
     && make webpack
 
-ADD cpp.properties /compiler-explorer/etc/config/c++.local.properties
+ADD c++.properties /compiler-explorer/etc/config/c++.local.properties
+
+RUN echo "Adding rust support to ce" \
+    && cargo install rustfilt
+
+ADD rust.properties /compiler-explorer/etc/config/rust.local.properties
 
 WORKDIR /compiler-explorer
 
